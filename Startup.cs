@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
+using NLog;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace AccountOwnerServer
 {
@@ -13,6 +16,7 @@ namespace AccountOwnerServer
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -24,6 +28,8 @@ namespace AccountOwnerServer
             services.ConfigureCors();
 
             services.ConfigureIISIntegration();
+
+            services.ConfigureLoggerService();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
